@@ -1,0 +1,43 @@
+{
+  "name": "jow",
+  "version": "0.1.0",
+  "description": "JSON Over Wire, an efficient protocol for real-time transmission of JSON data.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "transpile": "babel core --out-dir build",
+    "test": "npm run transpile && node_modules/.bin/nyc ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quart-company/jow.git"
+  },
+  "keywords": [
+    "json",
+    "over",
+    "wire",
+    "jow",
+    "protocol",
+    "data",
+    "stream",
+    "tcp",
+    "websockets",
+    "binary"
+  ],
+  "author": "Quart Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/quart-company/jow/issues"
+  },
+  "homepage": "https://github.com/quart-company/jow#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^0.24.0",
+    "babel-cli": "^6.26.0",
+    "nyc": "^11.4.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0"
+  }
+}
