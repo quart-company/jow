@@ -1,1 +1,1 @@
-module.exports = require('./build/CoreStream');
+module.exports = require('./build/JOW');
