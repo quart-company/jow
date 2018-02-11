@@ -11,11 +11,12 @@ export const pack = (items) => {
   // Allocate buffer
   const buffer = IsoBuffer.alloc(size);
   // Write size to array
-  buffer.writeUInt16BE(length, 0);
+  buffer.setUint16(length, 0);
 
   let cursor = 2;
   for (let j = 0; j < length; j++) {
-    buffer.writeUInt32BE(items[j].byteLength, cursor);
+    buffer.setUint32(items[j].byteLength, cursor);
+    /** @todo: Replace with LinkedBuffer, should improve performance dramatically */
     buffer.write(items[j], cursor + 4, items[j].byteLength);
 
     cursor += items[j].byteLength + 4;
@@ -25,15 +26,14 @@ export const pack = (items) => {
 };
 
 export const unpack = (buffer) => {
-  const length = buffer.readUInt16BE(0);
+  const length = buffer.getUint16(0);
   let bytesRead = 2; // Read 2 bytes length
   let results = [];
 
   for (let i = 0; i < length; i++) {
-    const size = buffer.readUInt32BE(bytesRead);
-    bytesRead += 4; // Read 4 bytes size
-    results.push(buffer.slice(bytesRead, bytesRead + size));
-    bytesRead += size;
+    const size = buffer.getUint32(bytesRead);
+    results.push(buffer.reflect(bytesRead + 4, size));
+    bytesRead += size + 4;
   }
 
   return {

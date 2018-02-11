@@ -14,8 +14,8 @@ test('allocate buffer', (t) => {
 });
 
 test('allocate empty/safe buffer', (t) => {
-  const buffer = IsoBuffer.alloc(100000);
-  t.is(buffer.byteLength, 100000, 'Byte length of buffer did not match expected value');
+  const buffer = IsoBuffer.alloc(100);
+  t.is(buffer.byteLength, 100, 'Byte length of buffer did not match expected value');
 
   for (let i = 0; i < buffer.size; i++) {
     t.is(buffer[i], 0);

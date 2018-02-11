@@ -25,8 +25,8 @@ test('pack multiple items', (t) => {
   t.is(dense[0], 0);
   t.is(dense[1], 3);
 
-  const length = dense.readUInt16BE(0);
-  const sizei1 = dense.readUInt32BE(2);
+  const length = dense.getUint16(0);
+  const sizei1 = dense.getUint32(2);
 
   t.is(length, 3);
   t.is(sizei1, i1.byteLength);
@@ -60,4 +60,28 @@ test('unpack multiple elements', (t) => {
   t.is(list.length, 2);
   t.is(decoder.decode(list[0]), text);
   t.true(IsoBuffer.compare(list[1], i2));
+});
+
+test('pack up to max number of elements', (t) => {
+  const max = 65535;
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  let elements = [];
+  let elementsRaw = [];
+  
+  for (let i = 0; i < max; i++) {
+    const text = `i-${i}`;
+    elements.push(encoder.encode(text));
+    elementsRaw.push(text);
+  }
+
+  const dense = pack(elements);
+  const { results: list, bytesRead } = unpack(dense);
+
+  t.true(Array.isArray(list));
+  t.is(list.length, max);
+  
+  for (let j = 0; j < max; j++) {
+    t.is(decoder.decode(list[j]), `i-${j}`);
+  }
 });

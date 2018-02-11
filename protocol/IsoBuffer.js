@@ -1,25 +1,24 @@
 // Isomorphic Buffer
 export default class IsoBuffer extends Uint8Array {
-  constructor(size) {
-    super(size);
+  constructor(a1, a2, a3) {
+    super(a1, a2, a3);
+    this.dataView = new DataView(this.buffer);
   }
 
-  writeUInt16BE(value, offset) {
-    const _value = + value;
-    const _offset = offset >>> 0;
-
-    this[_offset] = _value >>> 8;
-    this[_offset + 1] = _value;
+  getUint16(offset, le = false) {
+    return this.dataView.getUint16(offset, le);
   }
 
-  writeUInt32BE(value, offset) {
-    const _value = + value;
-    const _offset = offset >>> 0;
+  getUint32(offset, le = false) {
+    return this.dataView.getUint32(offset, le);
+  }
 
-    this[_offset] = _value >>> 24;
-    this[_offset + 1] = _value >>> 16;
-    this[_offset + 2] = _value >>> 8;
-    this[_offset + 3] = _value;
+  setUint16(value, byteOffset, le = false) {
+    this.dataView.setUint16(byteOffset, value, le);
+  }
+
+  setUint32(value, byteOffset, le = false) {
+    this.dataView.setUint32(byteOffset, value, le);
   }
 
   write(value, offset, length) {
@@ -43,14 +42,8 @@ export default class IsoBuffer extends Uint8Array {
     }
   }
 
-  readUInt16BE(offset = 0) {
-    const _offset = offset >>> 0;
-    return (this[_offset] << 8) | this[_offset + 1];
-  }
-
-  readUInt32BE(offset = 0) {
-    const _offset = offset >>> 0;
-    return (this[_offset] * 0x1000000) + ((this[_offset + 1] << 16) | (this[_offset + 2] << 8) | this[_offset + 3]);
+  reflect(start, size) {
+    return new IsoBuffer(this.buffer, start, size);
   }
 
   static compare(b1, b2) {
